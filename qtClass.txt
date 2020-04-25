@@ -1,0 +1,225 @@
+--------------------------------
+时间类
+QDateTime
+--------------------------------
+
+1.获取当前系统时间
+QDataTime qdt = QDataTime::currentDateTime();
+
+2.将时间控件上的字符串转化为数字
+QDateTimeEdit::YearSection
+QDateTimeEdit::MonthSection
+QDateTimeEdit::DaySection
+QDateTimeEdit::HourSection
+QDateTimeEdit::MinuteSection
+....
+QString qs;
+DWROD dwYear = (qs=qdate->sectionText(QDateTimeEdit::YearSection)).toInt();
+
+--------------------------------
+字符串类
+QString
+--------------------------------
+
+1.时间格式化为字符串
+QString qs = time.toString("yyyyMMddhhmmss");
+
+2.QString转int
+int nTime = qString.toInt();
+
+3.QString 转 char*
+QString qs(“123”);
+QByteArray qb = qs.toLatin1();
+char *str = qb.data();
+
+4.QString 转 string
+QString qs;
+string str = qs.toStdString;
+
+5.int转QString
+保留两位有效数字
+QString qs ＝ QString::number(i,'g',2);
+
+保留两位有效小数
+QString qs ＝ Qstring::number(i,'f',2);
+
+6.char* 转QString
+char * str
+QString qs  = QString(QLatin1String(str));
+
+7.string转QString 
+string str;
+QString qs = QString::fromStdString(str);
+
+8.int转string
+string str = std::to_string(int x)；
+
+字符串流QStringList
+1.一个简单的写入QStringList方法,使用流写入
+QStringList qsl;
+qsl<<"1"<<"2"<<"3";
+
+2.格式化输入,将逗号分隔开
+QStringList labels = QObject::trUtf8("1,开始时间,结束时间").simplified().split(",");
+
+--------------------------------
+表格视图类
+QTableView 
+--------------------------------
+
+表格视图,数据由继承QAvstractItemModel的子类models来提供
+实际上是通过QStandardItemModel的对象来对视图进行操作,操作包括生成表头,插入行...
+数据是通过model插入的,样式是通过view设置的
+再通过QtableView的对象set与之关联
+
+1.设置表头 
+QTableView qtv;
+QStandardItemModel*model = new QstandardItemModel();
+QStringList qls;
+qls << “1” << “2” <<”3”;
+model->setHorizontalHeaderLabels(qls);
+qtv.setModel(model);
+
+2.设置网格
+qtv.setShowGrid(bool);
+
+3.清空表格的方法:
+先获取到QStandardItemModel 对象的col,再使用removeRow(0);最后setModel
+for(int i = model->rowCount() ; i > 0 ; i—) 
+	 model->removeRow(0);
+
+4.获取表格选中的内容
+先通过Qtableview对象获取到行号
+int nRow = qtv.currentIndex().row();
+int nCol = qtv.currnetIndex().column();
+再通过model获取到内容
+QString qs = model->item(nRow,nCol)->text();
+
+--------------------------------
+标准化模型类
+QStandardItemModel
+--------------------------------
+
+QStandardItem为QStandardItemModel提供数据来源
+
+QstandardItem 将传入的QString对象进行构造
+QstandardItem *item = new QstandardItem(qs);
+
+再将QstandardItem对象传入给QStandardItemModel
+
+
+1插入数据
+model->setItem(int row,int col,item);
+设置需要插入的行,列,以及字符串
+
+2删除一行
+removeRow(0)
+QStandardItem
+
+--------------------------------
+信号和槽
+在类中声明信号和槽，通过connect来进行连接响应，做一些事件响应操作
+--------------------------------
+
+signals：
+void funSignal();
+public solts：
+void funSolt();
+
+通过connect关联信号和槽
+connect(this,SIGNAL(funSignal()),this,SLOT(funSolt()));
+
+通过emit进行响应
+通过emit funSignal()；
+
+--------------------------------
+Qt事件响应
+--------------------------------
+鼠标响应
+--------------------------------
+
+void mouseDoubleClickEvent(QMouseEvent *mouseEvent);
+Qt::LeftButton.....
+--------------------------------
+键盘响应
+--------------------------------
+
+keyPressEvent(QKeyEvent *keyEvent);
+
+
+
+--------------------------------
+QGLShaderProgram
+
+QThread?
+
+--------------------------------
+Qt窗口类
+--------------------------------
+
+常用的Qt::WindowFlags:
+Window
+SubWindow
+Dialog
+
+1.去掉标题栏
+frame->setWindowFlags(Qt::WindowMinMaxButtonsHint | Qt::FramelessWindowHint);
+
+2.全屏化
+判断窗口是否为全屏
+frame->isFullScreen();
+
+3.最大化
+frame->setWindowFlags(Qt::Window);
+frame->showFullScreen();
+
+4.最小化
+frame->setWindowFlags(Qt::SubWindow);
+frame->showNormal();
+
+5.获取控件位置：
+
+QPoint p = widget->pos();
+QSzie s = widget->size();
+Qrect r = widget->geometry()
+
+6.移动窗口
+
+widget->move(p);
+widget->resize(s);
+widget->setGeometry(r);
+
+7.坐标转换：
+
+mapToGlobal()将窗口坐标转换为显示器坐标
+mapFromGlobal()将显示器坐标转为窗口坐标
+mapToParent()将窗口坐标获得的pos转为父类widget的坐标
+mapFromParent()将父类窗口坐标转为当前窗口的坐标
+
+--------------------------------
+文件对话框
+QFileDialog 
+--------------------------------
+
+QFileDialog *fDialog = new QFileDialog(this);
+fDialog->setWindowTitle(QString("选择录像"));			//设置标题
+fDialog->setDirectory(ui->FilePath_line->text());	//设置路径
+fDialog->setNameFilter(tr("File(*.mp4)"));			//设置文件过滤条件
+fDialog->setFileMode(QFileDialog::ExistingFiles);	//设置单选
+QStringList fNames;
+if(fDialog->exec())
+ fNames = fDialog->selectedFiles();		//执行后将文件名输出到QStringList
+
+--------------------------------
+定时器
+Qtimer
+--------------------------------
+
+Qtimer *t = new Qtimer();
+connect(t,SIGNAL(timeout()),this,SLOT(checkNowTime())); //关联与定时器响应的函数
+t->setInterval(500);//设置定时时间
+t->start();
+t->stop();
+
+
+

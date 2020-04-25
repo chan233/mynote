@@ -1,0 +1,125 @@
+--------------------------------
+字符串类 
+CString
+--------------------------------
+1.查找字符串
+mid(_In_ int iFirst,_In_ int nCount) 从第iFirst位开始,字符串的位数为nCount
+
+--------------------------------
+对话框类
+CDialog
+--------------------------------
+
+1.屏幕坐标
+逻辑坐标是独立于设备坐标的统一接口.
+在逻辑坐标中,X轴以右为正,Y轴以下为正,坐标原点位于窗口的左上角
+
+2.客户区,是窗口区除去
+GetClinetRect() 获取客户区的大小
+GetWindowRect()	获取窗口区的大小
+
+--------------------------------
+文件对话框
+CFileDialog
+--------------------------------
+
+
+--------------------------------
+绘图类
+CPAINT
+--------------------------------
+
+设备描述表:
+设备描述表可描述文本颜色,背景颜色,背景模式,绘图模式,当前画笔,当前笔刷,当前字体......
+CClientDC 在OnPaint消息外画图
+CPaintDC 在OnPaint消息内画图
+
+1.获取屏幕的宽和高 
+dc.GetDeviceCaps(HORZRES);
+dc.GetDeviceCaps(VERTRES);
+
+2.设置dialog背景颜色
+在OnPaint内
+dc.FillSoildRect(rc,RGB(0,0,0));
+
+3.画直线
+SelectObject(CPen cpen)为pdc建立笔刷
+画线使用dc.MoveTo(),dc.LineTo();建立两个点,每画一条线都需建立对应关系
+
+4.画字体
+先设置好字体颜色,再将字体输出到坐标
+dc.SetTextColor(RGB());
+dc.TextOut(int x,int y,Cstring);
+
+5.画像素点
+dc.SetPixel(Cpoint cp,RGB(0,0,0));
+
+6.画矩形
+dc.Ellipse(Crect rc);
+
+7.画圆
+
+--------------------------------
+下拉框
+CComboBox
+--------------------------------
+CComboBox ccb;
+CString str;
+
+1.初始化控件
+ccb.AddString(str);
+
+2.插入一行
+ccb.InsertString(int nIndex, LPCTSTR lpszitem);
+
+3.删除一行
+ccb.DeleteString(int index);
+
+4.删除所有
+ccb.ResetContent();
+
+5.获取当前下拉框选中(已有)的内容 
+ccb.GetWindowText(str)
+
+6.选中后再获取内容,首先要获取到索引GetCurSel(),再通过索引获取到值
+ccb.GetLBText(ccb.GetCurSel(),str);
+
+7.查找字符串 FindString 
+
+--------------------------------
+更换软件图标
+--------------------------------
+
+1.先将图标制作为ico,导入到MFC资源中得到ID
+
+2.更换左上角与任务栏:
+在构造函数中修改
+m_hIcon = AfxGetApp()->LoadIcon(IDI);
+
+
+3.更换exe文件
+在rc文件中修改
+IDR_MAINFRAME           ICON                    "res\\favicon.ico"
+
+
+--------------------------------
+双缓冲
+--------------------------------
+
+双缓冲是一种用内存绘图的机制,先将位图绘制到内存中
+
+CDC MemDC;
+CBitmap Membt;
+CRect rc;
+GetClientRect(&rc);
+
+MemDC.CreateCompatibleDC(NULL);
+Membt.CreateCompatibleBitmap(this->dc,rc.Width(),rc.Height());
+
+MemDC.SetObject(&Membt);
+
+MemDC.FillSolidRect(0,0,m_rcGridSize.Width(),m_rcGridSize.Height(),RGB(255,255,255));
+
+dc.BitBlt(0,0,m_rcGridSize.Width(),m_rcGridSize.Height(),&MemDC,0,0,SRCCOPY);
+
+

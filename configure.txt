@@ -1,0 +1,59 @@
+--------------------------------
+configure
+--------------------------------
+
+./configure 
+如果进行默认安装, 执行文件是在/usr/local/bin 资源文件在/usr/local/share 下
+一些软件还可以加上 –with、–enable、–without、–disable 等等参数对编译加以控制，你可以通过允许 
+./configure –help 察看详细的说明帮助
+
+--------------------------------
+configure一些常用选项
+--------------------------------
+
+1.指定文件的安装位置
+--prefix
+
+2.指定可执行文件生成的目录
+--bindir
+
+3.指定库文件生成目录
+--libdir
+
+4.指定配置文件生成目录
+--syscondir
+
+5.指定生成平台
+--host
+
+6.关闭/开启某项特性
+--disable-feature
+--enable-feature
+
+7.配置/取消依赖
+--with-package
+--without-package
+
+--------------------------------
+make
+--------------------------------
+
+这条命令来进行安装（当然有些软件需要先运行 make check 或 make test 来进行一些测试）
+这一步一般需要你有 root 权限（因为要向系统写入文件）
+1.将make编译好的文件放到prefix下
+make install
+
+2.清除编译生成的可执行文件的和目标文件
+make clean
+ 
+3.连同MakeFile一起清除
+make distclean 
+
+4.完全卸载安装
+make uninstall
+
+
+
+
+
+

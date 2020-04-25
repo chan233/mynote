@@ -1,0 +1,43 @@
+
+--------------------------------
+cmake
+--------------------------------
+cmake是一种项目构建工具,使用外部编译方式编译项目,
+通过写CMakeLists来自己化生成makefile,减去繁琐的工作.
+
+--------------------------------
+语法
+--------------------------------
+
+
+1.变量的引用
+${}
+
+2.设置工程名称
+project(PROJECT_NAME) 
+
+project会引入两个变量
+PROJECT_NAME_BINARY_DIR, PROJECT_NAME_SOURCE_DIR
+
+同时也会定义两个等价的变量
+PROJECT_BINARY_DIR, PROJECT_SOURCE_DIR
+
+3.输出变量(printf)
+message(${SRC_LIST})
+
+4.设置编译所需的文件到变量SRC_LIST
+set(SRC_LIST hello.cpp)
+
+5.使用SRC列表进行生成二进制文件
+add_executable(BIN_NAME ${SRC_LIST}) 
+
+6.使用SRC列表生成库文件
+add_library(b ${lib_list})
+
+7.将库和目标文件链接
+set_target_properties(b PROPERTIES OUTPUT_NAME "a")
+target_link_libraries(a b)
+
+8.添加和包含子文件夹
+add_subdirectory(src)
+include_directories(${PROJECT_SOURCE_DIR}/libhello)
