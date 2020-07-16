@@ -1,8 +1,13 @@
+可通过添加 
+#include <QtWidgets>
+包含所有的控件到工程
+
+Qt是基于C++的高级应用程序接口
+
 --------------------------------
 时间类
 QDateTime
 --------------------------------
-
 1.获取当前系统时间
 QDataTime qdt = QDataTime::currentDateTime();
 
@@ -18,22 +23,18 @@ DWROD dwYear = (qs=qdate->sectionText(QDateTimeEdit::YearSection)).toInt();
 
 --------------------------------
 字符串类
-QString
+QString qs
 --------------------------------
-
 1.时间格式化为字符串
-QString qs = time.toString("yyyyMMddhhmmss");
+qs = time.toString("yyyyMMddhhmmss");
 
-2.QString转int
-int nTime = qString.toInt();
+2.QString 转 int
+int nTime = qs.toInt();
 
 3.QString 转 char*
-QString qs(“123”);
-QByteArray qb = qs.toLatin1();
-char *str = qb.data();
+char *str = qs.toLatin1().data();
 
 4.QString 转 string
-QString qs;
 string str = qs.toStdString;
 
 5.int转QString
@@ -54,29 +55,41 @@ QString qs = QString::fromStdString(str);
 8.int转string
 string str = std::to_string(int x)；
 
-字符串流QStringList
+9.QString格式化
+9.1
+QString msg ;
+int a = 0；
+int b = 0;
+msg.sprintf("move: %d,%d",a,b);
+9.2
+set.value(QString("/%1/%2").arg("RecordPath").arg("path")).toString();
+
+--------------------------------
+QStringList
+字符串流
+--------------------------------
 1.一个简单的写入QStringList方法,使用流写入
 QStringList qsl;
 qsl<<"1"<<"2"<<"3";
 
 2.格式化输入,将逗号分隔开
-QStringList labels = QObject::trUtf8("1,开始时间,结束时间").simplified().split(",");
+QStringList labels = 
+QObject::trUtf8("1,开始时间,结束时间").simplified().split(",");
 
 --------------------------------
 表格视图类
 QTableView 
 --------------------------------
-
-表格视图,数据由继承QAvstractItemModel的子类models来提供
-实际上是通过QStandardItemModel的对象来对视图进行操作,操作包括生成表头,插入行...
-数据是通过model插入的,样式是通过view设置的
-再通过QtableView的对象set与之关联
+表格视图,数据由继承 QAvstractItemModel 的子类 models 来提供
+实际上是通过 QStandardItemModel 的对象来对视图进行操作,操作包括生成表头,插入行...
+数据是通过 model 插入的,样式是通过 view 设置的
+再通过 QtableView 的对象 set 与之关联
 
 1.设置表头 
 QTableView qtv;
-QStandardItemModel*model = new QstandardItemModel();
+QStandardItemModel*model = new QStandardItemModel();
 QStringList qls;
-qls << “1” << “2” <<”3”;
+qls <<"ip" << "port" <<"usrname"<<"passwd";
 model->setHorizontalHeaderLabels(qls);
 qtv.setModel(model);
 
@@ -99,13 +112,13 @@ QString qs = model->item(nRow,nCol)->text();
 标准化模型类
 QStandardItemModel
 --------------------------------
+QStandardItem 为 QStandardItemModel 提供数据来源
 
-QStandardItem为QStandardItemModel提供数据来源
+QStandardItem 将传入的 QString 对象进行构造
 
-QstandardItem 将传入的QString对象进行构造
-QstandardItem *item = new QstandardItem(qs);
+QStandardItem *item = new QStandardItem(qs);
 
-再将QstandardItem对象传入给QStandardItemModel
+再将 QstandardItem 对象传入给 QStandardItemModel
 
 
 1插入数据
@@ -115,38 +128,77 @@ model->setItem(int row,int col,item);
 2删除一行
 removeRow(0)
 QStandardItem
-
 --------------------------------
 信号和槽
-在类中声明信号和槽，通过connect来进行连接响应，做一些事件响应操作
+在类中声明信号和槽，通过 connect 来进行连接响应，做一些事件响应操作
 --------------------------------
-
+1.声明
 signals：
 void funSignal();
+
 public solts：
 void funSolt();
 
-通过connect关联信号和槽
+2.关联
+通过 connect 关联信号和槽
 connect(this,SIGNAL(funSignal()),this,SLOT(funSolt()));
 
-通过emit进行响应
+3.发信号
+3.1
+通过 emit 发出信号
 通过emit funSignal()；
+3.2
+定时发一个信号
+QTimer::singleShot(0,this,SLOT(funSolt()));
 
 --------------------------------
-Qt事件响应
+Qt 事件响应
+--------------------------------
+通过重写各种事件，实现子类的消息响应
+
+
 --------------------------------
 鼠标响应
 --------------------------------
+void mousePressEvent(QMouseEvent *event) override;
+void mouseReleaseEvent(QMouseEvent *event) override;
+void mouseDoubleClickEvent(QMouseEvent *event) override;
+void mouseMoveEvent(QMouseEvent *event) override;
 
-void mouseDoubleClickEvent(QMouseEvent *mouseEvent);
+1.实时跟踪响应
+为了不影响性能，mouseMoveEvent 只会在 press 鼠标的时候触发，
+
+若要改为实时追踪，需设定 setMouseTracking(true)
+
+QString msg ;
+
+msg.sprintf("move: %d,%d",event->x(),event->y());
+
+ui->textEdit->setText(msg);
+
+
+--------------------------------
+重绘事件
+--------------------------------
+void resizeEvent(QResizeEvent *event) override;
+void showEvent(QShowEvent *event) override;
+
+###控件只有在show之后，才能获取到设定的大小与坐标
+所以子控件要适应父控件的大小，只好等父控件show了以后
+->
+statusbar->move(0,0);
+statusbar->resize(statusbar->parentWidget()->size());
+
+--------------------------------
+滑轮响应
+--------------------------------
+void wheelEvent(QWheelEvent *);
 Qt::LeftButton.....
+
 --------------------------------
 键盘响应
 --------------------------------
-
-keyPressEvent(QKeyEvent *keyEvent);
-
-
+void keyPressEvent(QKeyEvent *keyEvent);
 
 --------------------------------
 QGLShaderProgram
@@ -154,8 +206,18 @@ QGLShaderProgram
 QThread?
 
 --------------------------------
-Qt窗口类
+Qt窗口类/布局相关
 --------------------------------
+0.QT初始化界面的顺序
+->setupUi()
+读取*.ui的参数
+->resizeEvent()
+->show()
+->showEvent()
+
+##显示到屏幕
+所以如果想要在show之前就设定控件的尺寸，只有在ui里先预设
+否则则是在show到再自动计算
 
 常用的Qt::WindowFlags:
 Window
@@ -176,18 +238,57 @@ frame->showFullScreen();
 4.最小化
 frame->setWindowFlags(Qt::SubWindow);
 frame->showNormal();
+4.1一种双击控件全屏/退出全屏回到位置的方法
+，设置全局全局变量
+void PlayVideoDlgEx::mouseDoubleClickEvent(QMouseEvent *event)
+{
 
+
+    if(!FullScreen)
+    {
+        currentrc = this->parentWidget()->geometry();
+
+        this->setWindowFlags(Qt::Window);
+
+        this->showFullScreen();
+
+        FullScreen = true;
+    }
+    else
+    {
+        this->parentWidget()->setGeometry(currentrc);
+
+        this->setGeometry(0,0,currentrc.width(),currentrc.height());
+
+        this->setWindowFlags(Qt::SubWindow);
+
+        this->showNormal();
+
+
+        FullScreen = false;
+    }
+
+
+}
 5.获取控件位置：
-
 QPoint p = widget->pos();
 QSzie s = widget->size();
-Qrect r = widget->geometry()
+=
+QRect r = widget->geometry()
 
 6.移动窗口
-
 widget->move(p);
 widget->resize(s);
+=
 widget->setGeometry(r);
+
+6.屏幕/桌面大小
+
+QDesktopWidget *pDesktop = QApplication::desktop();
+QRect deskRect = QApplication::desktop()->availableGeometry();
+QRect screenRect = QApplication::desktop()->screenGeometry();
+int screenCount = QApplication::desktop()->screenCount();
+
 
 7.坐标转换：
 
@@ -195,6 +296,115 @@ mapToGlobal()将窗口坐标转换为显示器坐标
 mapFromGlobal()将显示器坐标转为窗口坐标
 mapToParent()将窗口坐标获得的pos转为父类widget的坐标
 mapFromParent()将父类窗口坐标转为当前窗口的坐标
+
+8.让 layout 随着窗口变化而变化
+8.1 在布局中选择主窗口 ->布局->垂直/水平 布局
+8.2	mian->setLayout(ui->varticalLayout)
+
+9.设置布局比例
+m_MainUi->horizontalLayout_main->setStretch(0,10);
+
+10.子对话框居中,需声明父类然后在内部实现，重写showevent
+
+void PtzCtrlDlg::showEvent(QShowEvent *event){
+
+    //this->adjustSize();
+    this->move(this->parentWidget()->geometry().center() - this->rect().center());
+
+}
+10.3正下方 ,//先移到中间,再向下平移
+
+bottonbarEx->move(bottonbarEx->parentWidget()->geometry().center() -
+                      bottonbarEx->rect().center());
+
+bottonbarEx->move(bottonbarEx->geometry().x(),
+                      bottonbarEx->geometry().y() +
+                      bottonbarEx->parentWidget()->geometry().height() * 0.4);
+11.控件置顶
+ui->pushButton->setWindowFlag(Qt::WindowStaysOnTopHint);
+
+12.窗口属性的设置
+setAcceptDrops(true);
+
+setWindowFlags(Qt::WindowStaysOnTopHint);
+setWindowFlags(Qt::WindowMinMaxButtonsHint | Qt::FramelessWindowHint);
+
+setAttribute()
+--------------------------------
+控件跟随父窗口变化的流程
+--------------------------------
+最大化：
+调用 showFullScreen() 后，在 resizeevent() 中，
+对自控件resize(mapToGlobal(this->pos()));
+
+最小化： 
+调用 setGeometry(0,0,currentrc.width(),currentrc.height())， 在 resizeevent() 中，
+对子控件resize(this->parentWidget()->pos());
+--------------------------------
+QSettings
+--------------------------------
+1.读取配置文件
+//从DESTDIR的路径下读取配置文件
+
+config.ini：
+[RecordPath]
+path=D:/
+
+QSettings set(".\\config.ini",QSettings::IniFormat);
+return set.value(QString("/%1/%2").arg("RecordPath").arg("path")).toString();
+
+
+--------------------------------
+文件类
+QFile
+--------------------------------
+1.读取文件
+QList<QStringList> data;
+// file operations
+QFile file("sample.csv");
+if(file.open(QIODevice::ReadOnly)) {
+QTextStream stream(&file);
+// loop forever macro
+forever {
+QString line = stream.readLine();
+// test for empty string 'QString("")'
+if(line.isEmpty()) {
+continue;
+}
+// test for null string 'String()'
+if(line.isNull()) {
+break;
+}
+QStringList row;
+// for each loop to iterate over containers
+foreach(const QString& cell, line.split(",")) {
+row.append(cell.trimmed());
+}
+data.append(row);
+}
+}
+2.write
+QString message("Hello World!");
+// prepare a file in the users home directory named out.txt
+QFile file(QDir::home().absoluteFilePath("out.txt"));
+// try to open the file in write mode
+if(!file.open(QIODevice::WriteOnly)) {
+qWarning() << "Can not open file with write access";
+return -1;
+}
+// as we handle text we need to use proper text codecs
+QTextStream stream(&file);
+// write message to file via the text stream
+stream << message;
+--------------------------------
+文件夹类
+QDir 
+--------------------------------
+1.window下获取盘符
+QVector<QString> paths;
+for(auto info : QDir::drives())
+	paths.push_back(info.absoluteFilePath());
+
 
 --------------------------------
 文件对话框
@@ -212,14 +422,142 @@ if(fDialog->exec())
 
 --------------------------------
 定时器
-Qtimer
+QTimer
 --------------------------------
 
-Qtimer *t = new Qtimer();
+QTimer *t = new QTimer();
 connect(t,SIGNAL(timeout()),this,SLOT(checkNowTime())); //关联与定时器响应的函数
-t->setInterval(500);//设置定时时间
-t->start();
+1.开始定时器
+//t->setInterval(500);//设置定时时间再启动
+//t->start();
+
+t->start(500)；//设置定时时间后直接启动
+
+2.停止定时器
 t->stop();
 
+3.仅定时一次
+setSingleShot(true)
 
+
+
+--------------------------------
+QComboBox
+下拉框
+--------------------------------
+QComboBox qcb；
+1.判断是否存在条目
+qcb.count();
+2.清空
+qcb.clear();
+3.插入
+qcb.addItem(QString &);
+4.通过字符串找到索引，然后选中
+int ret = qcb.findText(str);
+if(ret != -1)
+	qcb.setCurrentIndex(ret);
+5.选择触发事件
+通过设置currentTextChanged槽，可获取下拉框改变后的字符串
+
+
+--------------------------------
+QPaint
+Qt绘图类
+--------------------------------
+1.基本绘图流程
+->
+创建一块 QPixmap  
+-> 
+创建一个绘图类 QPainter,使用 QPixmap 作为它的构造,使用 QPainter 对 QPixmap 
+进行操作
+-> 
+在控件上 setPixmap
+QPixmap pix(20,20);
+QPainter painter(&pix);
+painter.drawRect(10,10,80,80);
+ui->labei->setPixmap(pix);
+
+2.设置背景图片/颜色
+设置颜色
+->
+QPalette palette(this->palette());
+palette.setColor(QPalette::Background,Qt::blue);
+this->setPalette(palette);
+
+设置背景图片
+->
+QPixmap map(".\\bk.jpg");
+QPalette pal(this->palette());
+pal.setBrush(QPalette::Background,QBrush(map));
+this->setPalette(pal);
+setAutoFillBackground(false);
+
+
+--------------------------------
+QMessageBox
+消息框类
+--------------------------------
+1.确认消息
+int ret = 
+QMessageBox::question(this,tr("警告"),tr("是否需要更新数据？"),QMessageBox::Yes|
+QMessageBox::No);
+
+if(ret == QMessageBox::Yes)
+	SetConfigValues();
+    
+
+--------------------------------
+QFont
+字体类
+--------------------------------
+1.调节字体大小
+设定好字体的样式，然后在setfont到各种控件上
+
+QWidget w；
+QFont font;
+font.setPointSize(50);
+w.setFont(font)
+
+
+--------------------------------
+Qsrand
+随机数
+--------------------------------
+qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
+
+int rand = qrand()%(max-min)+min;
+
+
+--------------------------------
+QListView
+
+--------------------------------
+
+--------------------------------
+容器类
+QVector QList
+--------------------------------
+1.写入容器时,push_back == append == <<
+
+int a = 20;
+int b = 10;
+QVector<int> vec;
+vec << a << b;
+
+2.读容器时,将容器赋值给迭代器模板,通过迭代器模板输出
+QVectorIterator<int> l(vec);
+while(l.hasNext()){
+	qDebug()<<l.next();
+}
+
+--------------------------------
+矩形类
+QRect
+--------------------------------
+
+1.adjust & adjusted
+QRect rc(QPoint(0,0),QSize(20,20));
+rc.adjust(5,5,5,5);//矩形进行位移和增大
+
+QRect rcb = rc.adjusted(5,5,5,5) //生成一个新的矩形
 

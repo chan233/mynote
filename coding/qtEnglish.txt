@@ -1,0 +1,18 @@
+﻿mechanism ：n 机制 
+appearance : n 外观
+concept ：n 概念
+terminology ：n 术语
+adapted ：v 使适应
+customize ：vt 定制
+specifications ：n 规格，说明书
+specify ：vt 规定
+cascading ：n 级联
+guarante ：v 保证
+restricted ：v 受限制
+distinctive ：adj 与众不同
+arbitrary ： adj 任意的（数量），武断，转制
+integration ：n 综合
+interval : n 间隔
+within 内部的，在之内
+guaranteed 保证
+delegate 代表

@@ -52,3 +52,7 @@ QMAKE_LFLAGS_RELEASE +=(指定 Release版依赖库路径)
 
 12.g++ 编译指令
 QMAKE_CXXFLAGS +=
+
+
+13.生成库的时候不生成软链接
+CONFIG += plugin

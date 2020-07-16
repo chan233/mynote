@@ -63,8 +63,12 @@ gcc一些常用选项
 
  链接到动态库
 -l -lssl(=-libssl) 
+
 设置寻找头文件的目录 XXX第一个寻找头文件的目录，寻找的顺序是：XXX-->/usr/include-->/usr/local/include
 
 -I XXX 
 
 -Wl, rpath=
+
+
+

@@ -10,6 +10,7 @@ configure
 --------------------------------
 configure一些常用选项
 --------------------------------
+凡事先要 --help
 
 1.指定文件的安装位置
 --prefix
@@ -34,6 +35,26 @@ configure一些常用选项
 --with-package
 --without-package
 
+
+8.CFLAGS / CXXFLAGS 
+
+CFLAGS 表示用于 C 编译器的选项，
+CXXFLAGS 表示用于 C++ 编译器的选项。
+
+可以用于指定头文件的路径
+CFLAGS=-I/usr/include -I/path/include
+
+
+9.LDFLAGS  / LIBS
+简单地说，LDFLAGS是告诉链接器从哪里寻找库文件，而LIBS是告诉链接器要链接哪些库文件
+
+指定库文件存在的目录
+LDFLAGS=-L/usr/lib -L/path/to/your/lib
+指定编译是要链接的库文件
+LIBS = -lpthread -liconv
+
+10 -Wl,rpath
+运行时路径
 --------------------------------
 make
 --------------------------------

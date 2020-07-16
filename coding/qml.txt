@@ -1,0 +1,184 @@
+qml = 元素+属性
+--------------------------------
+基本属性
+--------------------------------
+Geometry （几何属性）: width,height,x,y
+Layout handling（布局操作） : anchors.left(right,top,bottom,vertical center，horizontal center ) : parent 
+anchors.horizontalCenterOffset \ anchors.verticalCenterOffset 对位置进行微调
+Key handlikng （按键操作）: 按键 key , 按键定位 keyNavigation , focus 输入焦点
+Transformation（转换） : 缩放 scale , 旋转 rotate
+Visual（可视化）:  不透明度 opacity , 是否可见 visible, 裁剪 clip , 平滑 smooth
+State definition（状态定义) : 
+id : 标识符 命名你的根元素对象id为root
+source :　资源
+
+color :
+text : 
+font.family : "Ubuntu"
+font.pixelSize : 24
+
+
+--------------------------------
+property
+添加自定义的属性
+--------------------------------// (4) custom property
+property int times: 24
+property alias anotherTimes: thisLabel.times 	
+
+
+--------------------------------
+元素
+--------------------------------
+元素分为可视化和非可视化
+可视化:
+Image
+Rectangle
+Text
+Item
+非可视化:
+MouseArea
+
+
+--------------------------------
+Item
+基础元素
+--------------------------------
+通常被⽤来作为其它元素的容器使用，类似HTML语言中的div元素
+
+--------------------------------
+Image
+图像元素
+--------------------------------
+使用PreserveAspectCrop可以避免裁剪图像
+数据被渲染到图像边界外。默认情况下裁剪是被禁用的（clip:false）。你需
+要打开裁剪（clip:true）来约束边界矩形的绘制。
+Image {
+	x: 112; y: 12
+	width: 48
+	height: 118/2
+	source: "assets/rocket.png"
+	fillMode: Image.PreserveAspectCrop
+	clip: true
+}
+--------------------------------
+Text
+文本元素
+--------------------------------
+//水平 垂直效果
+horizontalAlignment
+verticalAlignment
+//外框效果，浮雕效果或者凹陷效果
+style
+styleColor
+Text {
+	text: "The quick brown fox"
+	color: "#303030"
+	font.family: "Ubuntu"
+	font.pixelSize: 28
+}
+
+--------------------------------
+Rectangle
+画矩形
+--------------------------------
+//边框颜色 边框宽度 半径
+border.color: "lightsteelblue"
+border.width: 4
+radius: 8
+
+Rectangle{
+	id:
+	width :
+	height :
+	gradient: Gradient {
+		//0为顶 1为底
+		GradientStop { position: 0.0; color: "lightsteelblue" }
+		GradientStop { position: 1.0; color: "slategray" }
+}
+}
+
+
+--------------------------------
+MouseArea
+鼠标响应区域
+--------------------------------
+
+MouseArea{
+	
+     anchors.fill: parent
+                onClicked: {
+                    parent.rotation += 45;
+                }
+
+            }
+}
+--------------------------------
+自定义的运行环境
+--------------------------------
+QQuickView* view = new QQuickView();
+QUrl source = Qurl::fromLocalUrl("main.qml");
+view->setSource(source);
+view.show();
+
+
+
+--------------------------------
+动画效果
+--------------------------------
+     MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    parent.rotation += 45;
+                }
+
+            }
+            Behavior on rotation {
+                NumberAnimation {
+                    duration: 50
+                }
+            }
+			
+			
+			
+--------------------------------
+定位元素
+--------------------------------
+Column,Row,Grid,Flow,Repeater
+
+Column {
+id: column
+anchors.centerIn: parent
+spacing: 8
+Rectangle { }
+...
+}
+Row {
+id: row
+anchors.centerIn: parent
+spacing: 20
+Rectangle { }
+...
+}
+Grid {
+id: grid
+rows: 2
+columns: 2
+anchors.centerIn: parent
+spacing: 8
+Rectangle { }
+...
+}
+Flow {
+anchors.fill: parent
+anchors.margins: 20
+spacing: 20
+Rectangle { }
+...
+}
+--------------------------------
+布局元素Layout Items
+--------------------------------
+top , bottom , left , right , horizontalCenter , verticalCenter,
+--------------------------------
+输入元素Input Items
+--------------------------------

@@ -1,0 +1,147 @@
+--------------------------------
+Qt QML（Qt Meta-Object Language） /QtQuick
+--------------------------------
+QML:
+用于描述应用程序用户界面的声明式编程语言
+
+
+相对于传统的 Qt 桌面开发，使用 widget，使用 UI 库
+Qt Quick是一种用 qml 语言开发的库，集成了很多绚丽的 UI 开发元素，能自动转化为 C++ 语言，适用于界面冲击感强的应用场景
+若要开发更现代的UI与高级应用，建议使用 Qt 5.x，+QML 2.X +QtQuick 2.x
+Qt Quick类似 java script
+
+--------------------------------
+Qt 添加资源文件
+--------------------------------
+界面文件，图片应放在资源文件中
+通过添加Qt-Qt Resource File，将资源文件放在qrc下
+
+--------------------------------
+Qt Qss /
+
+--------------------------------
+相对于QPalette设置按钮，皮肤受限制与本地系统的主题引擎，不能保证各个平台的主题/皮肤是一致的
+QSS是一种跨平台的方式，可以使各平台界面保持一致，而且更为简单
+1.selector + declaration  : QPushButton{ color: red }
+1.1 1selector 选择器
+
+通用选择器 *
+对所有类型有效果
+Type Selector ：“*”
+
+通用选择器 ：
+对所有类型有效果
+Type Selector ：QPushButton
+
+
+ID选择器 # 
+根据 object name 来筛选
+ID Selector ：QPushButton#okButton
+
+伪选择器 ：
+针对是控件的某一个动作,可以取非
+"QPushButton:hover{background:rgb(2,2,2)}"
+"QPushButton:!hover{background:rgb(2,2,2)}"
+
+子控件选择器 ::
+针对是控件的某一个小部件
+"QHeaderView::section{border-image:url(:/res/button/button2.png)}";
+
+
+属性选择器 QPushButton[flat="false"]
+通过筛选属性来匹配
+Property Selector ： QPushButton[flat="false"]
+
+类选择器 ：根据类型来筛选
+Class Selector ：.QPushButton
+
+Descendant Selector : QDialog QPushButton 
+Child Selector : QDialog > QPushButton
+
+1.2 declaration 声明
+属性：值
+
+2.
+broder-image ：会对图片进行自适应，但是对上面的控件进行覆盖，
+解决办法：
+setobjectname("myname")； 然后设置QWidget#myname{},（ID选择器）
+这样就可以 仅把图片设置到指定的控件
+
+
+backgroud-image 会根据图片对背景进行填充
+
+
+--------------------------------
+setstylesheet 的一些属性
+
+selector : declaration
+--------------------------------
+对于整个软件 可使用 QApplication::setStyleSheet
+对于单个窗口 可使用 QWidget::setStyleSheet
+对个单个控件 可使用 QPushButton::setStyleSheet
+QDialog无法使用 
+1.设置背景色
+QPushButton{background:rgb(255,255,255)}
+QPushButton::pressed{background:rgb(0,0,0)}
+2.设置背景图片
+QPushButton{broder-image:url() 5 5 5 5}
+
+3.border-radius：15px 设置四个角为圆角
+
+--------------------------------
+Qt 样式表
+--------------------------------
+可通过样式表修改控件的背景图片，颜色，字体。。。
+
+--------------------------------
+QGridLayout
+Qt 网格布局
+--------------------------------
+layoutLeftMargin ：Layout 的左侧边距
+layoutTopMargin ：Layout 的顶部边距
+layoutRightMargin ：Layout 的右侧边距
+layoutBottomMargin ：Layout 的底部边距
+
+两个控件之间的水平和竖直距离
+layoutHorizontalSpacing ： 水平距离
+layoutVerticalSpacing ： 垂直距离	
+
+layoutRowStretch : 各行比例
+layoutColumnStretch : 各列比例
+
+--------------------------------
+常用样式
+--------------------------------
+##设置样式时，可以同时设定多个属性，中间不需要进行分隔，写作一条即可
+this->setStyleSheet("QPushButton{border-image: url(:/res/button/buttona.png)}QPushButton:hover{border-image: url(:/res/button/button2.png)}QPushButton:pressed{border-image: url(:/res/button/button2.png)}");
+
+1. 
+//设置表格背景和表头
+"QTableView{border-image:url(:/res/button/button2.png)}"
+"QHeaderView::section{border-image:url(:/res/button/button2.png)}";"QPushButton:hover{background:rgb(2,2,2)}"
+//背景全透明
+"QTableView{background-color:transparent}"
+
+//背景半透明,参数范围为0-255，100为半透明
+"QTableView{background-color:rgba(123,123,123,100)}"
+
+
+2.QPushButton
+//设置按钮的文字颜色，背景色，在按钮上方悬停的颜色，按下时候的颜色
+"QPushButton{color:red}"
+"QPushButton{background:rgb(1,1,1)}"
+"QPushButton:hover{background:rgb(2,2,2)}"
+"QPushButton:pressed{background:rgb(3,3,3)}"
+             
+
+--------------------------------
+模块化的制作流程
+--------------------------------
+
+1.添加布局
+
+2.在布局中插入frame
+
+3.给frame设定样式（大小，颜色。。。。。）
+
+4.把新建的模块继承到frame
